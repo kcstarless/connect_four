@@ -20,17 +20,12 @@ describe Board do
 
   describe '#place_marker' do
     let(:player) { "\u25CF" }
-    let(:column) { 4 }
+    let(:col) { 4 }
 
-    context 'Mark is placed on the board' do
-      it 'Return players mark placed on the board' do
-        board = new_board.instance_variable_get(:@board)
-        expect(board[5][4]).to eq(player)
-        new_board.place_marker(column, player)
-      end
-
-      it 'Return player mark position on the board' do
-
+    context 'When marker is put in the fourth colmun' do
+      it 'It correctly places the marker' do
+        new_board.place_marker(col, player)
+        expect(new_board.board[5][col]).to eq(player)
       end
     end
   end
