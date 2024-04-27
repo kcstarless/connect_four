@@ -18,17 +18,14 @@ class Board
   end
 
   def place_marker(col, player)
-    h = Board::BOARD_HEIGHT - 1
+    h = BOARD_HEIGHT - 1
     while h >= 0
       if board[h][col] == "."
-        board[h][col] = player
+        board[h][col] = player.mark
         break
       end
       h -= 1
     end
-  end
-
-  def valid_position(col, player)
-
+    display_board
   end
 end

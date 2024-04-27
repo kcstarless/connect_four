@@ -34,19 +34,26 @@ class Game
   def round
     player = current_player
     round_info(player)
-    col = valid_input(gets.chomp.to_i)
-    puts col
+    print game_error(:invalid_column) until valid_input(col = gets.chomp.to_i)
+    board.place_marker(col - 1, player)
   end
 
   private
 
-  def valid_input(input)
-    if input.between?(1, 7)
-      input
-    else
-      puts 'invalid input'
-      round
-    end
+  def valid_input(col)
+    valid = false
+    valid = true if in_range?(col)
+    valid = false unless col_is_full?(col)
+    valid
+  end
+
+  def in_range?(col)
+    col.between?(1, 7)
+  end
+
+  def col_is_full?(col)
+    puts board.board[0][col - 1]
+    board.board[0][col - 1].eql?('.')
   end
 
   def current_player
