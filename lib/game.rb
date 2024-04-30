@@ -7,7 +7,7 @@ require_relative '../lib/info_module'
 # Game class
 class Game
   include GameInfo
-  attr_accessor :board, :player1, :player2, :switch_player
+  attr_accessor :board, :player1, :player2, :switch_player, :rounds
 
   def initialize
     @board = Board.new
@@ -25,9 +25,10 @@ class Game
   end
 
   def play_rounds
-    until game_won?
+    until game_won? || rounds.eql?(Board::BOARD_HEIGHT * Board::BOARD_WIDTH)
       round
       @switch_player = !switch_player
+      @rounds += 1
     end
   end
 
@@ -41,19 +42,15 @@ class Game
   private
 
   def valid_input(col)
-    valid = false
-    valid = true if in_range?(col)
-    valid = false unless col_is_full?(col)
-    valid
+    in_range?(col) && col_is_not_full?(col - 1) ? true : false
   end
 
   def in_range?(col)
     col.between?(1, 7)
   end
 
-  def col_is_full?(col)
-    puts board.board[0][col - 1]
-    board.board[0][col - 1].eql?('.')
+  def col_is_not_full?(col)
+    board.board[0][col].eql?('.') ? true : false
   end
 
   def current_player
