@@ -18,23 +18,24 @@ class Game
     start
   end
 
-  #Starts the game. 
+  # Starts the game.
   def start
     game_info
     board.display_board
     play_rounds
   end
 
-  #Plays round until game is won or no of rounds is maxed. 
+  # Plays round until game is won or no of rounds is maxed.
   def play_rounds
-    until game_won? || rounds.eql?(Board::BOARD_HEIGHT * Board::BOARD_WIDTH)
+    until game_won? || rounds.eql?(Board::BOARD_ROW * Board::BOARD_COL)
       round
       @switch_player = !switch_player
       @rounds += 1
     end
+    exit
   end
 
-  #Play each round. 
+  # Play each round.
   def round
     player = current_player
     round_info(player)
@@ -44,30 +45,33 @@ class Game
 
   private
 
-  #Return true if in_range? and col_is_not_full?
+  # Return true if in_range? and col_is_not_full?
   def valid_input(col)
     in_range?(col) && col_is_not_full?(col - 1) ? true : false
   end
 
-  #Return true if user input is in range.
+  # Return true if user input is in range.
   def in_range?(col)
     col.between?(1, 7)
   end
 
-  #Return true if column is full. 
+  # Return true if column is full.
   def col_is_not_full?(col)
     board.board[0][col].eql?('.') ? true : false
   end
 
-  #Return player1 or 2 
+  # Return player1 or 2
   def current_player
     return player1 unless switch_player
 
     player2
   end
 
-  #Return true if game is won by forming a line. 
+  # Return true if game is won by forming a line.
   def game_won?
-    false
+    if @board.line_formed == true
+      puts "You've won"
+      true
+    end
   end
 end
